@@ -1,0 +1,3 @@
+include ':virtual-background'
+include ':app'
+rootProject.name = "VirtualBackground"
