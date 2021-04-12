@@ -18,8 +18,8 @@ public class PeopleSegmentor {
 
     private static final String MODEL_FILE = "segm_full_v679.tflite";
     private static final String TAG = "PeopleSegmentor";
-    private static final int IMG_W = 256;
-    private static final int IMG_H = 144;
+    protected static final int IMG_W = 256;
+    protected static final int IMG_H = 144;
 
     private ByteBuffer segmentationMasks;
     private ByteBuffer modelInput;
@@ -53,11 +53,11 @@ public class PeopleSegmentor {
         }
     }
 
-    public Bitmap segment(Bitmap input) {
+    protected Bitmap segment(Bitmap input) {
         Bitmap scaledBitmap = Utils.scale(input, IMG_W, IMG_H);
         Utils.bitmapToByteBuffer(scaledBitmap, modelInput);
 
-
+        segmentationMasks.rewind();
         interpreter.run(modelInput, segmentationMasks);
 
         Bitmap mask = convertModelOutputToMask(segmentationMasks);
@@ -66,7 +66,7 @@ public class PeopleSegmentor {
 
     private Bitmap convertModelOutputToMask(ByteBuffer segmentationMasks) {
         Bitmap maskBitmap = Bitmap.createBitmap(IMG_W, IMG_H, Bitmap.Config.ARGB_8888);
-        int [] colors = {Color.TRANSPARENT, Color.BLACK};
+        int [] colors = {Color.TRANSPARENT, Color.WHITE};
 
         for (int i = 0; i < IMG_H; i++) {
             for (int j = 0; j < IMG_W; j++) {
@@ -75,7 +75,6 @@ public class PeopleSegmentor {
 
                 for (int k = 0; k < 2; k++) {
                     float value = segmentationMasks.getFloat(((i * IMG_W + j) * 2 + k) * 4);
-//                    Log.d(TAG, "---- output " + value);
 
                     if (value > maxVal) {
                         maxIdx = k;

@@ -25,15 +25,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EffectLib.init(getApplicationContext());
-        PeopleSegmentor peopleSegmentor = new PeopleSegmentor(true);
+        EffectLib effectLib = new EffectLib();
 
         imageView = findViewById(R.id.imageView);
         imageView2 = findViewById(R.id.imageView2);
 
         Bitmap input = getBitmapFromAssets(getApplicationContext(),"boy.jpg");
         imageView.setImageBitmap(input);
-
-        imageView2.setImageBitmap(peopleSegmentor.segment(input));
+        imageView2.setImageBitmap(effectLib.blurBackground(input, 10));
 
     }
 

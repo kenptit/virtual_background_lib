@@ -33,6 +33,9 @@ public class Utils {
     }
 
     public static Bitmap scale(Bitmap input, int w, int h) {
+        if (w == input.getWidth() && h == input.getHeight()) {
+            return input;
+        }
         return Bitmap.createScaledBitmap(input, w, h, false);
     }
 
@@ -53,11 +56,6 @@ public class Utils {
                 output.putFloat(((value >> 16) & 0xFF) / 255.0f);
                 output.putFloat(((value >> 8) & 0xFF) / 255.0f);
                 output.putFloat((value & 0xFF) / 255.0f);
-
-                if (i == j  && i == 0) {
-                    Log.d(TAG, "====" + (((value >> 16) & 0xFF) ) + " " + ((value >> 8) & 0xFF)  + " " + (value & 0xFF) );
-                    Log.d(TAG, "====" + (((value >> 16) & 0xFF) / 255.0f) + " " + ((value >> 8) & 0xFF) / 255.0f + " " + (value & 0xFF) / 255.0f);
-                }
 
             }
         }
